@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: @profileActive@
+
+app:
+  name: ggj-demo-web
+
+
+adonis:
+  datasource:
+    xconfKey:
+      write: p_hqbs_w
+      read: p_hqbs_w
+    mapperPackage: com.ggj.platform.demo.core.mapper
+  onecache:
+    redis:
+      servers:
+        - name: "" #redis的示例名定义为 name + 'RedisClient'。如忽略则为redisClient。一组redis只能有一个不配置redis.server.name, 默认""
+          xconfKey: "platform" #xconf中redis的key值，忽略前缀redis和后续的host、port、password等。例如本例中在xconf中为：redis.platform.host
+          prefix: "ggj-demo" #前缀, 默认为""
+          supportAnnotation: true #是否支持注解，仅有一个可以支持

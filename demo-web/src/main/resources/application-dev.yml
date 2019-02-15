@@ -1,0 +1,32 @@
+adonis:
+  xconf:
+    address: 47.99.2.51:2181,47.99.2.51:2182,47.99.2.51:2183
+  ons:
+    commonProducers:
+      - name: common_producer
+        producerId: PID_PLATFORM_TEST
+        topic: GGJ_PLATFORM_TEST_ZC
+    transactionProducers:
+      - name: transaction_producer
+        producerId: PID_GGJ_TRANSACTION_TEST
+        topic: GGJ_TOPIC_TRANSACTION_MESSAGE_TEST
+    delayProducers:
+      - name: delay_producer
+        producerId: PID_GGJ_TIMER_TEST
+        topic: GGJ_TOPIC_TIMER_MESSAGE_TEST
+        saveMode: redis
+
+    commonConsumers:
+      - name: common_consumer
+        consumerId: CID_PLATFORM_TEST #consumerId
+        topic: GGJ_PLATFORM_TEST_ZC
+      - name: transaction_consumer
+        consumerId: CID_GGJ_TRANSACTION_TEST #consumerId
+        topic: GGJ_TOPIC_TRANSACTION_MESSAGE_TEST
+    delayConsumers:
+      - name: delay_consumer
+        consumerId: CID_GGJ_TIMER_TEST
+        topic: GGJ_TOPIC_TIMER_MESSAGE_TEST
+        useNewFuture: true
+        saveMode: redis
+

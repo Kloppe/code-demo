@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ggj.platform.demo.core.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.ggj.platform.demo.core.entity.UserEntity">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="mobile_number" property="mobileNumber"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="base_column">
+        id, username, password, mobile_number, create_time, update_time
+    </sql>
+
+    <select id="getById" resultMap="BaseResultMap">
+        select
+        <include refid="base_column"/>
+        from user
+        where id = #{id}
+    </select>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="base_column"/>
+        from user
+        <include refid="page_sql"/>
+    </select>
+
+    <sql id="page_sql">
+        <where>
+            <if test="params.username != null">
+                and username = #{params.username}
+            </if>
+        </where>
+    </sql>
+
+    <select id="listByPage" resultMap="BaseResultMap">
+        select
+        <include refid="base_column"/>
+        from user
+        <include refid="page_sql"/>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="count" resultMap="BaseResultMap">
+        select count(id)
+        from user
+        <include refid="page_sql"/>
+    </select>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into user
+        <trim prefix="(" suffix=")">
+            <if test="username != null">name,</if>
+            <if test="password != null">text,</if>
+            <if test="mobileNumber != null">mobile_number,</if>
+            create_time
+        </trim>
+        <trim prefix="value(" suffix=")">
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="mobileNumber != null">#{mobileNumber},</if>
+            now()
+        </trim>
+    </insert>
+
+    <update id="update">
+        update user
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="mobileNumber != null">mobile_number = #{mobileNumber},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete form user where id = #{id}
+    </delete>
+
+    <insert id="insertBatch">
+        insert into user(username, password, mobile_number, create_time)
+        <foreach collection="list" open="values" separator="," item="item">
+            (#{item.username}, #{item.password}, #{item.mobileNumber}, now())
+        </foreach>
+    </insert>
+</mapper>
